@@ -51,3 +51,31 @@ function add_course($course_name)
     $statement->execute();
     $statement->closeCursor();
 }
+
+function update_course($db, $course_id, $course_name) {
+    $query = 'UPDATE courses SET courseName = :course_name WHERE courseID = :course_id';
+
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':course_name', $course_name, PDO::PARAM_STR);
+        $statement->bindValue(':course_id', $course_id, PDO::PARAM_INT);
+        return $statement->execute();
+    } catch (PDOException $e) {
+        error_log("Update course error: " . $e->getMessage());
+        return false;
+    }
+}
+
+function get_course_by_id($db, $course_id) {
+    $query = 'SELECT * FROM courses WHERE courseID = :course_id LIMIT 1';
+
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':course_id', $course_id, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Fetch course error: " . $e->getMessage());
+        return false;
+    }
+}

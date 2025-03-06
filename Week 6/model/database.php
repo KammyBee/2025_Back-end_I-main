@@ -1,6 +1,7 @@
 <?php
 $dsn = "mysql:host=localhost; dbname=assignment_tracker";
 $username = 'root';
+$password = '12345';
 
 
 try {
